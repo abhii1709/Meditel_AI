@@ -14,19 +14,24 @@ class MeditelSystem:
 
     def add_patient(self, patient):
         self.patient.append(patient)
+        
+    def find_doctor(self, name):
+        return next((d for d in self.doctors if d.name == name), None)
 
     def create_appointment(self, doctor, patient, date_time):
-        appointment = Appointment(doctor, patient, date_time)
-        self.appointments.append(appointment)
-        return appointment
-
+        if doctor not in self.doctors:
+            raise ValueError(f"Doctor {doctor.name} not found.")
+        if patient not in self.patients:
+            raise ValueError(f"Patient {patient.name} not found.")
+        appt = Appointment(doctor, patient, date_time)
+        self.appointments.append(appt)
+        return appt
+    
     def list_appointments(self):
         for a in self.appointments:
             print(a.describe())
     
-    def list_doctors(self):
-        for d in self.doctors:
-            print(d.describe())
+   
 
 system=MeditelSystem()
 d1 = Doctor("Priya Sharma", 45, "Cardiologist")
