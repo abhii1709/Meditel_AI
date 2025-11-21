@@ -14,13 +14,13 @@ class Doctor(Person):
     
     @property
     def speciality(self)->str:
-        return self.speciality
+        return self._speciality
     
     @speciality.setter
     def speciality(self,value:str):
          if not value or not value.strip():
              raise ValueError("Speciality cannot be empty.")
-         self.speciality = value.strip().title()
+         self._speciality = value.strip().title()
         
     
         
