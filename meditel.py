@@ -3,13 +3,20 @@ from models.person import Person
 from models.doctors import Doctor
 from models.patients import Patient
 from models.appointment import Appointment
-
+from service.scheduler import Scheduler
+from ai.ollama_client import Ollama_triage_client
 
 class MeditelSystem:
-    def __init__(self):
+    def __init__(self,use_ai=True):
         self.doctors = []
         self.patients = []
         self.appointments = []
+        
+        ollama_client = None
+        if use_ai:
+            ollama_client = Ollama_triage_client(model="llama3")
+        
+        self.scheduler = Scheduler(self.doctors, self.appointments,ollama_client)
        
 
     def add_doctor(self, doctor):
@@ -27,9 +34,7 @@ class MeditelSystem:
         if patient not in self.patients:
             raise ValueError(f"Patient {patient.name} not found.")
         
-        appt = Appointment(doctor, patient, date_time)
-        self.appointments.append(appt)
-        return appt
+        return self.scheduler.schedule(doctor, patient, date_time)
 
        
 
@@ -37,60 +42,35 @@ class MeditelSystem:
         for a in self.appointments:
             print(a.describe())
             
-    def find_doctor_by_speciality(self,speciality):
+    def find_doctor_by_specialty(self,specialty):
         return next(
-            (d for d in self.doctors if d.speciality.lower() == speciality.lower()),
+            (d for d in self.doctors if d.specialty.lower() == specialty.lower()),
             None
         )
         
-    def _infer_speciality_from_symptoms(self, symptom_text: str) -> str:
-         
-         text = symptom_text.lower()
-
-         if "chest" in text or "heart" in text or "bp" in text:
-            return "Cardiologist"
-
-         if "skin" in text or "rash" in text or "itch" in text or "allergy" in text:
-            return "Dermatologist"
-
-         if "cough" in text or "cold" in text or "fever" in text:
-            return "Physician"
-
-      
-         return "General Physician"
+    
      
     def create_appointment_by_symptom(self, patient, symptom_text, date_time):
         
 
         if patient not in self.patients:
             raise ValueError(f"Patient {patient.name} not found in system.")
+        return self.scheduler.schedule_by_symptom(patient, symptom_text, date_time)
 
-        # 1) Symptoms -> specialty
-        speciality = self._infer_speciality_from_symptoms(symptom_text)
-        print(f"[DEBUG] Inferred specialty: {speciality}")
-
-        # 2) Doctor dhundo
-        doctor = self.find_doctor_by_speciality(speciality)
-        if doctor is None:
-            raise ValueError(f"No doctor found for speciality: {speciality}")
-
-        # 3) Appointment create karo (pehle se existing method use kar rahe hain)
-        appt = self.create_appointment(doctor, patient, date_time)
-        return appt
 
 
 def main():
-    system = MeditelSystem()
+    system = MeditelSystem(use_ai=True)
 
     d1 = Doctor("Priya Sharma", 45, "Cardiologist")
     system.add_doctor(d1)
 
-    p1 = Patient("Ravi Kumar", 32, "Chest Pain")
+    p1 = Patient("Ravi Kumar", 32, "Farting")
     system.add_patient(p1)
 
     appt = system.create_appointment_by_symptom(
         p1,
-        "Chest Pain and breathlessness",
+        "Chest pain, sweating and breathlessness",
         datetime(2025, 11, 11, 14, 30),
     )
 
