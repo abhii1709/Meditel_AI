@@ -70,7 +70,7 @@ def main():
 
     appt = system.create_appointment_by_symptom(
         p1,
-        "Chest pain, sweating and breathlessness",
+        "rashes",
         datetime(2025, 11, 11, 14, 30),
     )
 

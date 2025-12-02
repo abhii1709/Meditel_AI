@@ -38,7 +38,7 @@ class Doctor(Person):
         return cls.doctors_created
     
     @staticmethod
-    def validate_speciality(spec: str) -> bool:
+    def validate_specialty(spec: str) -> bool:
         """Check if a given specialty is valid."""
         valid_specialties = [
             "Cardiology", "Dermatology", "Pediatrics",
