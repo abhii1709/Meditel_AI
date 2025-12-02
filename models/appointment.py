@@ -1,13 +1,21 @@
 class Appointment:
+    STATUS_SCHEDULED = "Scheduled"
+    STATUS_COMPLETED = "Completed"
+    STATUS_CANCELLED = "Cancelled"
     def __init__(self, doctor, patient, date_time):
         self.doctor = doctor
         self.patient = patient
         self.date_time = date_time
-        self.is_completed = False
+        self.status = Appointment.STATUS_SCHEDULED 
 
     def complete(self):
-        self.is_completed = True
+        self.status = Appointment.STATUS_COMPLETED
 
+    def cancel(self):
+        self.status = Appointment.STATUS_CANCELLED
+   
+   
+   
     def describe(self):
         status = " (COMPLETED)" if self.is_completed else ""
         return (

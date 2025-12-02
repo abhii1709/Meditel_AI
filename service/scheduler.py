@@ -13,36 +13,39 @@ class Scheduler:
 
     # ---------- "AI" jaisa dimag: symptoms -> specialty ----------
     def _infer_specialty_from_symptoms(self, symptom_text: str) -> str:
-        if self.ollama_client is not None:
-         try:
+      if self.ollama_client is not None:
+        try:
             specialty = self.ollama_client.predict_specialty(symptom_text)
 
             if isinstance(specialty, str) and specialty.strip():
+                # ✅ NEW: agar comma hai to pehli specialty lo
+                specialty = specialty.split(",")[0].strip()
+
                 print(f"[OLLAMA AI] Predicted specialty: {specialty}")
-                return specialty.strip()
+                return specialty
 
-         except Exception as e:
+        except Exception as e:
             print("[OLLAMA AI] Failed, fallback to rules:", e)
-        
-        text = symptom_text.lower()
 
-        if "chest" in text or "heart" in text or "bp" in text:
-            return "Cardiologist"
+      text = symptom_text.lower()
 
-        if "skin" in text or "rash" in text or "itch" in text or "allergy" in text:
-            return "Dermatologist"
+      if "chest" in text or "heart" in text or "bp" in text:
+           return "Cardiologist"
 
-        if "cough" in text or "cold" in text or "fever" in text:
-            return "Physician"
+      if "skin" in text or "rash" in text or "itch" in text or "allergy" in text:
+        return "Dermatologist"
 
-        # default fallback
-        return "General Physician"
+      if "cough" in text or "cold" in text or "fever" in text:
+        return "Physician"
+
+      return "General Physician"
+
 
     # ---------- Doctor search ----------
     def find_doctor_by_specialty(self, specialty: str) -> Doctor | None:
-        specialty = specialty.lower()
+        specialty = specialty.lower().strip()
         for d in self.doctors:
-            if hasattr(d, "specialty") and d.specialty.lower() == specialty:
+            if hasattr(d, "specialty") and d.specialty.lower().strip() == specialty:
                 return d
         return None
 
