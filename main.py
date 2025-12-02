@@ -10,11 +10,23 @@ from schemas.appt_schema import AppointmentWithSymptomsRequest, AppointmentRespo
 from schemas.patient_schema import PatientCreate, PatientResponse
 from database import engine, get_db, Base
 from models.db_models import DoctorDB, PatientDB, AppointmentDB
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+
 system = MeditelSystem(use_ai=True)
 
 @app.post("/doctors", response_model=DoctorResponse)
