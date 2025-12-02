@@ -112,4 +112,16 @@ def get_patients():
 
     return result
 
-    
+@app.get("/appointments")
+def get_appointments():
+    result = []
+
+    for a in system.appointments:
+        result.append({
+            "doctor_name": a.doctor.name,
+            "patient_name": a.patient.name,
+            "scheduled_time": a.date_time,
+            "status": a.status,
+        })
+
+    return result

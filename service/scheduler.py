@@ -51,6 +51,8 @@ class Scheduler:
 
     # ---------- Direct scheduling (doctor already decided) ----------
     def schedule(self, doctor: Doctor, patient: Patient, date_time: datetime) -> Appointment:
+        if not self._is_doctor_available(doctor, date_time):
+         raise ValueError(f"Doctor {doctor.name} is not available at this time.")
         appt = Appointment(doctor, patient, date_time)
         self.appointments.append(appt)
         return appt
@@ -71,7 +73,21 @@ class Scheduler:
         if doctor is None:
             raise ValueError(f"No doctor found for specialty: {specialty}")
 
-        # 3) appointment banao
+        if not self._is_doctor_available(doctor, date_time):
+         raise ValueError(f"Doctor {doctor.name} is not available at this time.")
+
         appt = Appointment(doctor, patient, date_time)
         self.appointments.append(appt)
         return appt
+    
+    def _is_doctor_available(self, doctor: Doctor, date_time: datetime) -> bool:
+        """Check karo ki given time pe doctor free hai ya nahi."""
+        for appt in self.appointments:
+            # same doctor + same time + still scheduled
+            if (
+                appt.doctor == doctor and
+                appt.date_time == date_time and
+                appt.status == Appointment.STATUS_SCHEDULED
+            ):
+                return False
+        return True
