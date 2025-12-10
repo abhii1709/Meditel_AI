@@ -21,7 +21,7 @@ import {
 
 type Tab = "appointments" | "doctors" | "patients" | "create";
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "https://meditel-ai.onrender.com";
 
 export default function MeditelApp() {
   const [activeTab, setActiveTab] = useState<Tab>("appointments");
