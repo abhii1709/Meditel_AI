@@ -222,3 +222,45 @@ def sync_system_to_db(db: Session = Depends(get_db)):
     
     db.commit()
     return {"message": "Sync completed", "synced": synced}
+
+
+@app.delete("/doctors/{doctor_id}")
+def delete_doctor(doctor_id: int, db: Session = Depends(get_db)):
+    # Check doctor in DB
+    doctor = db.query(DoctorDB).filter(DoctorDB.id == doctor_id).first()
+    if not doctor:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+
+    # Delete related appointments (if any)
+    db.query(AppointmentDB).filter(AppointmentDB.doctor_id == doctor_id).delete()
+
+    # Delete doctor from DB
+    db.delete(doctor)
+    db.commit()
+
+    # Remove doctor from in-memory system
+    system.doctors = [d for d in system.doctors if d.name != doctor.name]
+
+    return {"success": True, "message": "Doctor deleted successfully"}
+
+
+
+@app.delete("/patients/{patient_id}")
+def delete_patient(patient_id: int, db: Session = Depends(get_db)):
+    # Check patient in DB
+    patient = db.query(PatientDB).filter(PatientDB.id == patient_id).first()
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+
+    # Delete related appointments (if any)
+    db.query(AppointmentDB).filter(AppointmentDB.patient_id == patient_id).delete()
+
+    # Delete patient from DB
+    db.delete(patient)
+    db.commit()
+
+    # Remove from in-memory system
+    system.patients = [p for p in system.patients if p.name != patient.name]
+
+    return {"success": True, "message": "Patient deleted successfully"}
+
