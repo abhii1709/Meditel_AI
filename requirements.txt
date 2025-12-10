@@ -5,3 +5,4 @@ pydantic
 python-multipart
 dnspython
 psycopg2-binary
+requests
