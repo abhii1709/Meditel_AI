@@ -1,0 +1,53 @@
+# ================================
+# Node / npm
+# ================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ================================
+# Vite / Build Output
+# ================================
+dist/
+.vite/
+
+# ================================
+# Environment Files (SECRETS)
+# ================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ================================
+# Logs
+# ================================
+logs
+*.log
+
+# ================================
+# OS / Editor Junk
+# ================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================================
+# VS Code
+# ================================
+.vscode/
+!.vscode/extensions.json
+
+# ================================
+# TypeScript
+# ================================
+*.tsbuildinfo
+
+# ================================
+# Optional: Coverage & Cache
+# ================================
+coverage/
+.cache/

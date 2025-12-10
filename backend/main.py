@@ -4,11 +4,11 @@ from datetime import datetime
 
 from models.doctors import Doctor
 from models.patients import Patient
-from meditel import MeditelSystem
+from backend.meditel import MeditelSystem
 from schemas.doctor_schemas import DoctorResponse, DoctorCreate
 from schemas.appt_schema import AppointmentWithSymptomsRequest, AppointmentResponseModel
 from schemas.patient_schema import PatientCreate, PatientResponse
-from database import engine, get_db, Base
+from backend.database import engine, get_db, Base
 from models.db_models import DoctorDB, PatientDB, AppointmentDB
 from fastapi.middleware.cors import CORSMiddleware
 
