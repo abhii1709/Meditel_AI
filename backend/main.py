@@ -2,14 +2,14 @@ from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from datetime import datetime
 
-from models.doctors import Doctor
-from models.patients import Patient
+from backend.models.doctors import Doctor
+from backend.models.patients import Patient
 from backend.meditel import MeditelSystem
-from schemas.doctor_schemas import DoctorResponse, DoctorCreate
-from schemas.appt_schema import AppointmentWithSymptomsRequest, AppointmentResponseModel
-from schemas.patient_schema import PatientCreate, PatientResponse
+from backend.schemas.doctor_schemas import DoctorResponse, DoctorCreate
+from backend.schemas.appt_schema import AppointmentWithSymptomsRequest, AppointmentResponseModel
+from backend.schemas.patient_schema import PatientCreate, PatientResponse
 from backend.database import engine, get_db, Base
-from models.db_models import DoctorDB, PatientDB, AppointmentDB
+from backend.models.db_models import DoctorDB, PatientDB, AppointmentDB
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

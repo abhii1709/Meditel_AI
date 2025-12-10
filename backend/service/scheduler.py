@@ -1,7 +1,7 @@
 from datetime import datetime
-from models.appointment import Appointment
-from models.doctors import Doctor
-from models.patients import Patient
+from backend.models.appointment import Appointment
+from backend.models.doctors import Doctor
+from backend.models.patients import Patient
 
 
 class Scheduler:

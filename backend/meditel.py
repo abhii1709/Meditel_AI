@@ -1,9 +1,9 @@
 from datetime import datetime
-from models.person import Person
-from models.doctors import Doctor
-from models.patients import Patient
-from models.appointment import Appointment
-from service.scheduler import Scheduler
+from backend.models.person import Person
+from backend.models.doctors import Doctor
+from backend.models.patients import Patient
+from backend.models.appointment import Appointment
+from backend.service.scheduler import Scheduler
 from ai.ollama_client import Ollama_triage_client
 
 class MeditelSystem:
