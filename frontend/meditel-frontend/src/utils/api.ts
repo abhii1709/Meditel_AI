@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000";
+const API_BASE = "https://meditel-ai.onrender.com";
 
 export const checkBackendHealth = async (): Promise<boolean> => {
   try {
